@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<title>Covid - Mappa esercizi commerciali</title>
+    <link rel="stylesheet" href="https://d19vzq90twjlae.cloudfront.net/leaflet-0.7/leaflet.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+    <script src="https://d19vzq90twjlae.cloudfront.net/leaflet-0.7/leaflet.js">
+    </script>
+    <style>
+    body {
+	    padding: 0;
+	    margin: 0;
+	}
+	html, body, #map {
+	    height: 100%;
+	    width: 100vw;
+	}
+		</style>
+</head>
+<body>
+	<div id="map"></div>
+	<script type="text/javascript">
+        var map = L.map('map').setView([40.6311103, 17.9287464], 14);
+        mapLink = 
+            '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+        L.tileLayer(
+            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; ' + mapLink + ' Contributors',
+            maxZoom: 18,
+            }).addTo(map);
+				
+	/* Initialize the SVG layer */
+	map._initPathRoot()    
+
+	// create popup contents
+    var customPopup = "Mozilla Toronto Offices<br/><img src='http://joshuafrazier.info/images/maptime.gif' alt='maptime logo gif' width='350px'/>";
+    // specify popup options 
+    var customOptions =
+    {
+    'maxWidth': '500',
+    'className' : 'custom'
+    };
+
+	var marker = L.marker([40.6311103, 17.9287464]);
+	marker.title = "ciao";
+	marker.bindPopup(customPopup,customOptions).addTo(map);
+
+	//changing the content on mouseover
+	/*marker.on('click', function(){
+	    marker._popup.setContent('something else ' + marker.title);
+	});
+	*/
+
+	marker.addTo(map);
+
+	/*var popup = L.popup()
+    .setLatLng(latlng)
+    .setContent('<p>Hello world!<br />This is a nice popup.</p>')
+    .openOn(map);
+    */
+
+    	//		see here:
+    	//		https://docs.aws.amazon.com/AmazonS3/latest/dev/website-hosting-custom-domain-walkthrough.html
+	/* We simply pick up the SVG from the map object */
+	var svg = d3.select("#map").select("svg"),
+	g = svg.append("g");
+	
+	d3.json("data/circles.json", function(collection) {
+		/* Add a LatLng object to each item in the dataset */
+		collection.objects.forEach(function(d) {
+			d.LatLng = new L.LatLng(d.circle.coordinates[0],
+									d.circle.coordinates[1])
+		})
+		
+		var feature = g.selectAll("circle")
+			.data(collection.objects)
+			.enter().append("circle")
+			.style("stroke", "black")  
+			.style("opacity", .6) 
+			.style("fill", "red")
+			.attr("r", 20);  
+		
+		map.on("viewreset", update);
+		update();
+
+		function update() {
+			feature.attr("transform", 
+			function(d) { 
+				return "translate("+ 
+					map.latLngToLayerPoint(d.LatLng).x +","+ 
+					map.latLngToLayerPoint(d.LatLng).y +")";
+				}
+			)
+		}
+	})			 
+</script>
+</body>
+</html>
