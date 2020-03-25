@@ -18,3 +18,10 @@ html, body, #map {
 .popup_name {
 	font-weight: bold;
 }
+
+i {
+  width: 1em;
+  height: 1em;
+  display:block;
+  cursor: pointer;
+}
