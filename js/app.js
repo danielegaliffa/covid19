@@ -1,13 +1,14 @@
-var mapLink = '<a href="//openstreetmap.org">OpenStreetMap</a>';
-var fontLink = '<a href="http://fontawesome.io">Font Awesome by Dave Gandy - http://fontawesome.io</a>';
-var authorlink = 'map created by <a href="https://it.linkedin.com/in/danielegaliffa">Daniele Galiffa</a>';
+var mapLink = '&copy; <a href="//openstreetmap.org">OpenStreetMap</a> Contributors';
+var fontLink = '<a href="//fontawesome.io">Font Awesome by Dave Gandy - http://fontawesome.io</a>';
+var authorLink = 'map created by <a href="//it.linkedin.com/in/danielegaliffa">Daniele Galiffa</a>';
+var dataLink = 'data provided by <a href="//www.comune.brindisi.it/hh/index.php">Comune di Brindisi</a>';
 
 var no_cache = Math.random().toString().replace(".","");
 var data_url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTB7QuheI8mzSxqLWEHU0eRA7QlmICN3p18czaVEfFI_r9WNtRfQMK4cmWJr5yyIFi8hDHfaRLCXo9Z/pub?gid=0&single=true&output=tsv&p=' + no_cache;
 var map = L.map('map').setView([40.6311103, 17.9287464], 14);
 
 L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-	{attribution: authorlink + ' | &copy; ' + mapLink + ' Contributors | ' + fontLink,
+	{attribution: authorLink + ' | ' + dataLink + ' | ' + mapLink + ' | ' + fontLink,
         maxZoom: 18,}).addTo(map);
 
 map._initPathRoot()    
