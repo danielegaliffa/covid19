@@ -145,4 +145,6 @@ d3.tsv(data_url, function(data) {
 	map.fitBounds(group.getBounds());
 	//map.setMaxBounds(map.getBounds());
 	//map.fitBounds();
+	d3.select("#map").classed("hidden",false);
+	d3.select(".loader").remove();
 });
