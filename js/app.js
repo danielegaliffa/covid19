@@ -135,16 +135,57 @@ var _createMarker = function(p_data){
 	})
 	return marker;
 }
+
+
+var report = function(state) {
+  //console.log('Permission ' + state);
+  if(state == 'granted'){
+  	navigator.geolocation.getCurrentPosition(onPermissionSuccess,onPermissionError,geoSettings);
+  }
+}
+
+var onPermissionError = function(){
+	//console.log("ERROR");
+};
+var geoSettings = {
+	"enableHighAccuracy": true
+}
+var onPermissionSuccess = function(p_obj){
+	var d = {};
+	d.Lat = p_obj.coords.latitude;
+	d.Lon = p_obj.coords.longitude;
+	if(d.Lat != null && d.Lon != null){
+		markers.push(_createMarker(d));
+	}
+	console.log("DONE");
+};
+
+var _handlePermission = function() {
+  navigator.permissions.query({name:'geolocation'}).then(function(result) {
+    if (result.state == 'granted') {
+      report(result.state);
+    } else if (result.state == 'prompt') {
+      report(result.state);      navigator.geolocation.getCurrentPosition(onPermissionSuccess,onPermissionError,geoSettings);
+    } else if (result.state == 'denied') {
+      report(result.state);
+    }
+    result.onchange = function() {
+      report(result.state);
+    }
+  });
+}
+
+//	not needed now
+//	_handlePermission();
+
 d3.tsv(data_url, function(data) {
 	data.forEach(function(d) {
 		if(d.Lat != null && d.Lon != null){
-			markers.push(_createMarker(d));
+			//markers.push(_createMarker(d));
 		}
 	})
 	var group = L.featureGroup(markers).addTo(map);
 	map.fitBounds(group.getBounds());
-	//map.setMaxBounds(map.getBounds());
-	//map.fitBounds();
 	d3.select("#map").classed("hidden",false);
 	d3.select(".loader").remove();
 });
