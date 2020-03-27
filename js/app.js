@@ -1,7 +1,7 @@
-var mapLink = '&copy; <a target="_blank" href="//openstreetmap.org">OpenStreetMap</a> Contributors';
-var fontLink = '<a target="_blank" href="//fontawesome.io">Font Awesome by Dave Gandy - http://fontawesome.io</a>';
-var authorLink = 'map created by <a target="_blank"href="//it.linkedin.com/in/danielegaliffa">Daniele Galiffa</a>';
-var dataLink = 'source data: <a target="_blank" href="//www.comune.brindisi.it/brindisi/images/servizi_aggiuntivi/coronavirus/elenco_attivita_consegna_a_domicilio_27marzo.pdf">Comune di Brindisi</a> last updated on 2020.03.27';
+var mapLink = '&copy; <a href="//openstreetmap.org" target="_blank" >OpenStreetMap</a> Contributors';
+var fontLink = '<a href="//fontawesome.io"  target="_blank" >Font Awesome by Dave Gandy - http://fontawesome.io</a>';
+var authorLink = 'map created by <a target="_blank" href="//it.linkedin.com/in/danielegaliffa">Daniele Galiffa</a>';
+var dataLink = 'source data: <a href="//www.comune.brindisi.it/brindisi/images/servizi_aggiuntivi/coronavirus/elenco_attivita_consegna_a_domicilio_27marzo.pdf" target="_blank" >Comune di Brindisi</a> last updated on 2020.03.27';
 
 var no_cache = Math.random().toString().replace(".","");
 var data_url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTB7QuheI8mzSxqLWEHU0eRA7QlmICN3p18czaVEfFI_r9WNtRfQMK4cmWJr5yyIFi8hDHfaRLCXo9Z/pub?gid=0&single=true&output=tsv&p=' + no_cache;
@@ -136,52 +136,10 @@ var _createMarker = function(p_data){
 	return marker;
 }
 
-
-var report = function(state) {
-  //console.log('Permission ' + state);
-  if(state == 'granted'){
-  	navigator.geolocation.getCurrentPosition(onPermissionSuccess,onPermissionError,geoSettings);
-  }
-}
-
-var onPermissionError = function(){
-	//console.log("ERROR");
-};
-var geoSettings = {
-	"enableHighAccuracy": true
-}
-var onPermissionSuccess = function(p_obj){
-	var d = {};
-	d.Lat = p_obj.coords.latitude;
-	d.Lon = p_obj.coords.longitude;
-	if(d.Lat != null && d.Lon != null){
-		markers.push(_createMarker(d));
-	}
-	console.log("DONE");
-};
-
-var _handlePermission = function() {
-  navigator.permissions.query({name:'geolocation'}).then(function(result) {
-    if (result.state == 'granted') {
-      report(result.state);
-    } else if (result.state == 'prompt') {
-      report(result.state);      navigator.geolocation.getCurrentPosition(onPermissionSuccess,onPermissionError,geoSettings);
-    } else if (result.state == 'denied') {
-      report(result.state);
-    }
-    result.onchange = function() {
-      report(result.state);
-    }
-  });
-}
-
-//	not needed now
-//	_handlePermission();
-
 d3.tsv(data_url, function(data) {
 	data.forEach(function(d) {
 		if(d.Lat != null && d.Lon != null){
-			//markers.push(_createMarker(d));
+			markers.push(_createMarker(d));
 		}
 	})
 	var group = L.featureGroup(markers).addTo(map);
