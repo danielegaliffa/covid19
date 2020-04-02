@@ -1,7 +1,10 @@
+var _source_url = '//www.comune.brindisi.it/brindisi/images/servizi_aggiuntivi/coronavirus/elenco%20attivita%20consegna%20a%20domicilio%202%20aprile.pdf';
+var _last_update = '2020.04.02';
+
 var mapLink = '&copy; <a href="//openstreetmap.org" target="_blank" >OpenStreetMap</a> Contributors';
 var fontLink = '<a href="//fontawesome.io"  target="_blank" >Font Awesome by Dave Gandy - http://fontawesome.io</a>';
 var authorLink = 'map created by <a target="_blank" href="//it.linkedin.com/in/danielegaliffa">Daniele Galiffa</a>';
-var dataLink = 'source data: <a href="//www.comune.brindisi.it/brindisi/images/servizi_aggiuntivi/coronavirus/elenco_attivita_consegna_a_domicilio_27marzo.pdf" target="_blank" >Comune di Brindisi</a> last updated on 2020.03.27';
+var dataLink = 'source data: <a href="' + _source_url +'" target="_blank" >Comune di Brindisi</a> last updated on ' + _last_update;
 
 var no_cache = Math.random().toString().replace(".","");
 var data_url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTB7QuheI8mzSxqLWEHU0eRA7QlmICN3p18czaVEfFI_r9WNtRfQMK4cmWJr5yyIFi8hDHfaRLCXo9Z/pub?gid=0&single=true&output=tsv&p=' + no_cache;
