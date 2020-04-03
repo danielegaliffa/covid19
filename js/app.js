@@ -1,5 +1,5 @@
-var _source_url = '//www.comune.brindisi.it/brindisi/images/servizi_aggiuntivi/coronavirus/elenco%20attivita%20consegna%20a%20domicilio%202%20aprile.pdf';
-var _last_update = '2020.04.02';
+var _source_url = '//www.comune.brindisi.it/brindisi/images/servizi_aggiuntivi/coronavirus/elenco%20attivita%20consegna%20a%20domicilio%203%20aprile.pdf';
+var _last_update = '2020.04.03';
 
 var mapLink = '&copy; <a href="//openstreetmap.org" target="_blank" >OpenStreetMap</a> Contributors';
 var fontLink = '<a href="//fontawesome.io"  target="_blank" >Font Awesome by Dave Gandy - http://fontawesome.io</a>';
@@ -129,20 +129,26 @@ var _setItemVisibility = function(p_data,p_prop){
 }
 
 var _createMarker = function(p_data){
-	var marker = L.marker([p_data.Lat, p_data.Lon]);
-	marker.data = _mapData(p_data);
-	marker.bindPopup(customPopup,customOptions).addTo(map);
-	marker.on('click', function(){
-		marker._popup.setContent(_getPopupContent(marker.data));
-		_setItemsVisibility(marker.data);
-	})
-	return marker;
+	if(p_data.Lat != null && p_data.Lon != null){
+		var marker = L.marker([p_data.Lat, p_data.Lon]);
+		marker.data = _mapData(p_data);
+		marker.bindPopup(customPopup,customOptions).addTo(map);
+		marker.on('click', function(){
+			marker._popup.setContent(_getPopupContent(marker.data));
+			_setItemsVisibility(marker.data);
+		})
+		return marker;
+	}
+	return null
 }
 
 d3.tsv(data_url, function(data) {
 	data.forEach(function(d) {
 		if(d.Lat != null && d.Lon != null){
-			markers.push(_createMarker(d));
+			var m = _createMarker(d);
+			if(m != null){
+				markers.push(m);
+			}
 		}
 	})
 	var group = L.featureGroup(markers).addTo(map);
